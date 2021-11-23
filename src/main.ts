@@ -1,7 +1,8 @@
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
-import * as Vue from 'vue'
 import {createApp} from "vue"
+import * as dotenv from "dotenv"
+dotenv.config()
 
 createApp(App).use(router).mount('#app')

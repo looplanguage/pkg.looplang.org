@@ -3,7 +3,6 @@
     <h1>
       Authorisation
     </h1>
-    {{test}}
     <button @click="GithubOnClick">
       Github
     </button>
@@ -20,7 +19,12 @@ import {Options, Vue} from "vue-class-component";
   },
   methods: {
     GithubOnClick(){
-      window.location.href ="https://github.com/login/oauth/authorize?client_id=" + "4752c94a8fec0fe202a6"// TODO change clientID to environment variable
+      let clientid = process.env.VUE_APP_GITHUBCLIENTID;
+
+      if (clientid == null){
+          throw new Error("client id is null or undefined")
+      }
+      window.location.href ="https://github.com/login/oauth/authorize?client_id=" + clientid
     }
   }
 

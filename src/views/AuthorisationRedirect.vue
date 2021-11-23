@@ -12,7 +12,8 @@ import {Options ,Vue} from "vue-class-component";
 
 @Options({
   components: {
-    AuthorisationRedirect,
+    AuthorisationRedirect
+
   },
   props:{
     github: {
@@ -25,22 +26,27 @@ import {Options ,Vue} from "vue-class-component";
 
 })
 
-
 export default class AuthorisationRedirect extends Vue{
   github = "";
   Status = "Redirecting...";
 
-  async created(){
-    await new Promise(resolve => setTimeout(resolve, 500))
+  async created() : Promise<void>{
     this.Status = "Authenticating...";
-    await new Promise(resolve => setTimeout(resolve, 500))
-    if (this.github != ""){
-      fetch("https://localhost:5001/login/github/" + this.github)
+    if (this.github != "") {
+      await fetch("https://localhost:5001/login/github/" + this.github)
           .then(res => {
-            console.log(res)
-          })
-    }
+            if (res.status == 200){
+              res.json()
+              .then(data => {
+                console.log(data)
+                //TODO Store the JWTToken in a Cookie
+                this.$router.push('/')
 
+              }).catch(err => console.log(err))
+              return;
+              }
+            }).catch(err => console.log(err))
+          }
     await this.$router.push('/auth')
   }
 }
