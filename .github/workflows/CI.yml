@@ -15,10 +15,9 @@ jobs:
       - name: Run ESLint
         run: eslint . --ext .js,.jsx,.ts,.tsx
   build:
+    needs: [ es-lint ]
     name: Build
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x, 14.x]
